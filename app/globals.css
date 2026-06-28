@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* Spotify design tokens (exact palette from the build spec)           */
+/* ------------------------------------------------------------------ */
+@theme {
+  --color-base: #121212; /* app background */
+  --color-surface: #181818; /* elevated surfaces / cards */
+  --color-surface-2: #282828; /* higher elevation / pressed chips */
+  --color-surface-3: #1f1f1f; /* subtle elevation */
+  --color-green: #1ed760; /* primary green accent */
+  --color-green-brand: #1db954; /* logo / brand mark */
+  --color-text: #ffffff; /* primary text */
+  --color-subtle: #b3b3b3; /* secondary text */
+  --color-divider: #2a2a2a; /* borders / dividers */
+
+  --font-sans: var(--font-app), system-ui, sans-serif;
+
+  --radius-tile: 6px;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: #000000;
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior: none;
+}
+
+/* The faux-app is a fixed-size phone; keep everything tight + crisp. */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ------------------------------------------------------------------ */
+/* Utilities                                                           */
+/* ------------------------------------------------------------------ */
+
+/* Hide scrollbars but keep scrolling (Spotify chrome has no visible bars). */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Loading shimmer for album art + skeleton rows. */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.shimmer {
+  background-image: linear-gradient(
+    90deg,
+    #1d1d1d 25%,
+    #2c2c2c 37%,
+    #1d1d1d 63%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* Subtle entrance for tracklist rows when a Vibe set updates. */
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-row-in {
+  animation: row-in 0.32s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.animate-sheet-up {
+  animation: sheet-up 0.34s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.animate-fade-in {
+  animation: fade-in 0.25s ease both;
+}
+
+/* Spotify uses a discrete 3-dot equalizer / spinner; keep a soft pulse. */
+@keyframes soft-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.animate-soft-pulse {
+  animation: soft-pulse 1.1s ease-in-out infinite;
+}
+
+input::placeholder {
+  color: #6f6f6f;
+}
+
+/* Native-feel range slider (familiarity dial). */
+input[type="range"].vibe-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 9999px;
+  outline: none;
+}
+input[type="range"].vibe-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+input[type="range"].vibe-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: none;
+  border-radius: 9999px;
+  background: #ffffff;
+  cursor: pointer;
+}
