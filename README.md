@@ -75,7 +75,8 @@ proprietary Circular, wired as a single swappable token).
 ## ▶️ Run locally
 
 ```bash
-cd vibe-app
+git clone https://github.com/kraken-ator/vibe-spotify-mvp.git
+cd vibe-spotify-mvp
 npm install
 cp env.example .env.local          # PowerShell: Copy-Item env.example .env.local
 # open .env.local and set GEMINI_API_KEY=...   (get one at https://aistudio.google.com/apikey)
@@ -89,11 +90,13 @@ overridable with the `GEMINI_MODEL` env var. It defaults to
 
 ## ☁️ Deploy to Vercel
 
-1. Push this repo to GitHub (see below).
-2. On [vercel.com](https://vercel.com) → **Add New… → Project** → import the repo.
-3. **Root Directory:** `vibe-app` (important — the Next app lives in a subfolder).
-4. **Environment Variables:** add `GEMINI_API_KEY` (and optionally `GEMINI_MODEL`).
-5. **Deploy.** Vercel auto-detects Next.js; no other config needed.
+1. On [vercel.com](https://vercel.com) → **Add New… → Project** → import
+   `vibe-spotify-mvp`.
+2. **Framework Preset:** Next.js (auto-detected). **Root Directory:** `./`
+   (default — the app is at the repo root).
+3. **Environment Variables:** add `GEMINI_API_KEY` (and optionally
+   `GEMINI_MODEL`).
+4. **Deploy.** No other config needed; every push to `main` redeploys.
 
 ## 📝 Notes
 
