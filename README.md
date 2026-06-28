@@ -88,16 +88,6 @@ overridable with the `GEMINI_MODEL` env var. It defaults to
 `gemini-2.5-flash-lite` for the largest free-tier quota; swap to
 `gemini-2.5-flash` for slightly higher quality.
 
-## ☁️ Deploy to Vercel
-
-1. On [vercel.com](https://vercel.com) → **Add New… → Project** → import
-   `vibe-spotify-mvp`.
-2. **Framework Preset:** Next.js (auto-detected). **Root Directory:** `./`
-   (default — the app is at the repo root).
-3. **Environment Variables:** add `GEMINI_API_KEY` (and optionally
-   `GEMINI_MODEL`).
-4. **Deploy.** No other config needed; every push to `main` redeploys.
-
 ## 📝 Notes
 
 - No audio playback — play/pause/scrubber are visual only.
