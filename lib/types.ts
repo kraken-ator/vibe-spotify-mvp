@@ -20,21 +20,23 @@ export interface VibeIntent {
   context: string;
 }
 
-/** A one-tap steering chip tailored to the current vibe. */
 export interface SteeringSuggestion {
-  label: string; // short chip text, <= 3 words
-  action: string; // directive passed back verbatim as steeringAction
+  label: string; 
+  action: string;
 }
 
-/** Exact response shape returned by /api/vibe. */
 export interface VibeResponse {
   intent: VibeIntent;
   tracks: Track[];
-  title: string; // short AI-generated playlist name (2–4 words)
-  whyThese: string; // <= 18 words
-  note?: string; // surfaces vague/contradictory handling
-  isSearch?: boolean; // true if the prompt was really a direct search
-  steeringSuggestions?: SteeringSuggestion[]; // tailored to this prompt
+  title: string; 
+  whyThese: string; 
+  note?: string; 
+  isSearch?: boolean; 
+  steeringSuggestions?: SteeringSuggestion[]; 
+  
+  inferredLabel?: string;
+  confidence?: "high" | "medium" | "low";
+  whyInferred?: { title: string; artist: string; reason: string }[];
 }
 
 export interface SeedTrack {
@@ -42,13 +44,14 @@ export interface SeedTrack {
   artist: string;
 }
 
-/** Body POSTed to /api/vibe. */
 export interface VibeRequest {
-  prompt: string;
+  prompt?: string;
+  mode?: "prompt" | "infer";
+  sessionHistory?: Track[];
   currentSet?: Track[];
   steeringAction?: string;
   seedTrack?: SeedTrack;
-  familiarity?: number; // 0 (familiar) .. 100 (new) — included for steering context
+  familiarity?: number;
 }
 
 export interface SavedVibe {
@@ -63,21 +66,18 @@ export interface SavedVibe {
 
 export type Tab = "home" | "search" | "library";
 
-export type VibeStatus = "empty" | "loading" | "result" | "error";
+export type VibeStatus = "empty" | "loading" | "inferring" | "inferred" | "result" | "error";
 
 export interface VibeSession {
   status: VibeStatus;
   prompt: string;
+  mode: "prompt" | "infer"; // <-- ADDED THIS
   result: VibeResponse | null;
   seed?: SeedTrack;
-  familiarity: number; // 0..100
+  familiarity: number; 
   error?: string;
-  /** A steering call is in flight; keep showing the current result underneath. */
   steering: boolean;
-  /** id of a track the user selected as the "more like this" anchor. */
   anchorTrackId?: string;
-  /** true once the current set has been saved to Library with no edits since. */
   saved: boolean;
-  /** id of the Library playlist this session is linked to, if any. */
   savedVibeId?: string;
 }

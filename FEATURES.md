@@ -12,13 +12,13 @@ real time.
 - **Natural-language prompt → real tracklist.** Type a vibe in your own words
   ("upbeat but not annoying, like early Joji, for a late-night drive") and get
   **16–20 real, well-known songs** that fit.
-- **Structured intent parsing.** Gemini converts the prompt into structured
+- **Structured intent parsing.** Groq (via Llama 3) converts the prompt into structured
   intent behind the scenes: mood, energy (1–5), genres, era, reference artists,
   exclusions, and context/activity.
-- **Per-track reasons (trust mechanic).** Every track shows a ≤8-word reason it
-  was picked (e.g. "Mellow, intimate, perfect for introspection").
-- **"Why these" summary.** A one-sentence (≤18-word) explanation of how the set
-  matches the prompt, shown at the top of the result.
+- **Per-track reasons (trust mechanic).** Every track shows a detailed 1-2 sentence reason it
+  was picked, fully text-wrapped for readability (e.g. "Mellow, intimate, perfect for introspection").
+- **"Why these" summary.** A detailed paragraph (3-4 sentences) explaining how the set
+  matches the prompt, completely visible with multi-line text wrapping at the top.
 - **AI-generated playlist title.** A short, catchy 2–4 word name is generated
   from the prompt's meaning (e.g. "late-night drive…" → "Neon Reflections") and
   used as the default when saving.
@@ -87,15 +87,15 @@ real time.
 
 - **Save individual tracks.** A heart on every track row toggles it in/out of
   Liked Songs, with an "Added to Liked Songs" toast.
-- **Save the whole set as a named Vibe.** A bottom sheet pre-filled with the
+- **Save the whole set as a named Vibe.** A safely padded bottom sheet pre-filled with the
   AI-generated title; editable; saves to Your Library.
 - **"Saved" state.** After saving, the "Save this Vibe" button disappears,
   replaced by a subtle "✓ Saved to Library" indicator.
 - **Returns on edits.** The moment you steer or move the dial, the action
   returns — now labeled **"Save changes."**
 - **Update vs. new playlist.** Saving a vibe that's already a Library playlist
-  (with new edits) opens a choice popup: **Update "<name>"** (overwrite in place,
-  no duplicate) or **Save as new playlist** (keep the original, branch a copy).
+  (with new edits) opens a choice popup: **Update "<name>"** (with a fresh AI-recommended title)
+  or **Save as new playlist** (keep the original, branch a copy).
 - **Reopen from Library.** Tapping a saved Vibe reopens it in full result state
   (as already-saved), re-linked so further edits know which playlist to update.
 
@@ -168,17 +168,15 @@ real time.
 
 ## 12. Technical & architecture features
 
-- **AI is the engine.** Google Gemini (`@google/genai`) does both intent parsing
-  and curation, via a single server route (`/api/vibe`).
-- **Server-side key only.** The API key is read from `GEMINI_API_KEY` on the
+- **AI is the engine.** Groq (`groq-sdk`) running Llama 3.3 does both intent parsing
+  and curation at lightning speed, via a single server route (`/api/vibe`).
+- **Server-side key only.** The API key is read from `GROQ_API_KEY` on the
   server and never reaches the browser bundle. `.env.local` is gitignored.
-- **Reliable structured output.** Gemini is called with
-  `responseMimeType: application/json` plus a `responseSchema`, with defensive
-  JSON parsing (fence-stripping fallback) and normalization (id slugs, duration
-  clamping, de-duping).
-- **Swappable model in one place.** `lib/config.ts` holds the model id
-  (defaults to `gemini-2.5-flash-lite` for the largest free-tier quota),
-  overridable via the `GEMINI_MODEL` env var.
+- **Reliable structured output.** Groq is called with `response_format: { type: "json_object" }`
+  and explicit schema instructions, with defensive JSON parsing (fence-stripping fallback)
+  and normalization (id slugs, duration clamping, de-duping).
+- **Generous quotas.** The Llama 3.3 70B model provides the perfect balance of reasoning
+  capability and ultra-low latency generation, easily bypassing standard free-tier API rate limits.
 - **No database, no localStorage.** All state (now-playing, liked songs, saved
   Vibes, the active session) lives in a single in-memory React Context.
 - **Next.js 16 (App Router) + TypeScript + Tailwind v4**, Turbopack.
@@ -191,7 +189,7 @@ real time.
 - **Swappable font token.** Spotify's proprietary Circular is approximated with
   **Montserrat** via a single `--font-app` token — a licensed Circular file can
   be dropped in without touching anything else.
-- **Smooth motion** — sheet slide-ups, tab/now-playing transitions, row-update
+- **Smooth motion** — flawlessly padded sheet slide-ups, tab/now-playing transitions, row-update
   animations, loading shimmers, and an equalizer indicator on the playing track.
 - **No audio** — all transport controls are visual only (by design).
 - **Privacy-scrubbed** — all personal/friend-created playlists from the source

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
+import { X } from "lucide-react";
 
 interface Props {
   open: boolean;
@@ -12,53 +12,50 @@ interface Props {
 
 export function SaveVibeSheet({ open, defaultName, onClose, onSave }: Props) {
   const [name, setName] = useState(defaultName);
-
-  useEffect(() => {
-    if (open) setName(defaultName);
+  
+  useEffect(() => { 
+    if (open) setName(defaultName); 
   }, [open, defaultName]);
 
   if (!open) return null;
 
   return (
-    <div className="absolute inset-0 z-[55] flex flex-col justify-end">
-      <div
-        className="animate-fade-in absolute inset-0 bg-black/60"
-        onClick={onClose}
+    <div className="absolute inset-0 z-[70] flex flex-col justify-end">
+      {/* Backdrop overlay */}
+      <div 
+        className="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity" 
+        onClick={onClose} 
       />
-      <div className="animate-sheet-up relative rounded-t-2xl bg-[#1e1e1e] p-5 pb-8">
-        <div className="mx-auto mb-4 h-1 w-9 rounded-full bg-white/25" />
-        <div className="mb-1 flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-green" fill="currentColor" />
-          <h3 className="text-[17px] font-bold text-white">Save this Vibe</h3>
+      
+      {/* Sheet Container with pb-[140px] */}
+      <div className="relative animate-sheet-up rounded-t-3xl bg-[#242424] px-5 pb-[140px] pt-6 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+        <div className="flex items-center justify-between pb-6">
+          <h2 className="text-[20px] font-bold text-white">Name your Vibe</h2>
+          <button 
+            onClick={onClose} 
+            className="rounded-full p-2 active:bg-white/10"
+            aria-label="Close"
+          >
+            <X className="h-6 w-6 text-subtle hover:text-white" />
+          </button>
         </div>
-        <p className="mb-4 text-[13px] text-subtle">
-          It&apos;ll show up in Your Library so you can come back to it.
-        </p>
+        
         <input
-          autoFocus
+          type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Name your Vibe"
-          className="w-full rounded-lg border border-white/15 bg-white/5 px-3.5 py-3 text-[15px] text-white outline-none focus:border-green/60"
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && name.trim()) onSave(name.trim());
-          }}
+          className="w-full rounded-xl bg-[#333] px-4 py-4 text-[16px] font-semibold text-white placeholder:text-subtle focus:outline-none focus:ring-2 focus:ring-green"
+          placeholder="My Awesome Vibe"
+          autoFocus
         />
-        <div className="mt-4 flex items-center justify-end gap-3">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 text-[14px] font-semibold text-subtle"
-          >
-            Cancel
-          </button>
-          <button
-            disabled={!name.trim()}
-            onClick={() => onSave(name.trim())}
-            className="rounded-full bg-green px-6 py-2.5 text-[14px] font-bold text-black disabled:opacity-40"
-          >
-            Save
-          </button>
-        </div>
+        
+        <button
+          onClick={() => onSave(name)}
+          disabled={!name.trim()}
+          className="mt-6 w-full rounded-full bg-green py-4 text-[16px] font-bold text-black active:scale-[0.98] disabled:opacity-50"
+        >
+          Save to Library
+        </button>
       </div>
     </div>
   );

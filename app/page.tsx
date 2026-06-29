@@ -2,40 +2,39 @@
 
 import { useApp } from "@/lib/AppContext";
 import { PhoneFrame } from "@/components/PhoneFrame";
-import { StatusBar } from "@/components/StatusBar";
-import { BottomNav } from "@/components/BottomNav";
-import { MiniPlayer } from "@/components/MiniPlayer";
 import { HomeScreen } from "@/components/screens/HomeScreen";
 import { SearchScreen } from "@/components/screens/SearchScreen";
 import { LibraryScreen } from "@/components/screens/LibraryScreen";
+import { LikedSongsScreen } from "@/components/screens/LikedSongsScreen";
 import { NowPlayingScreen } from "@/components/screens/NowPlayingScreen";
 import { VibeScreen } from "@/components/screens/VibeScreen";
-import { LikedSongsScreen } from "@/components/screens/LikedSongsScreen";
+import { BottomNav } from "@/components/BottomNav";
+import { MiniPlayer } from "@/components/MiniPlayer";
 
 export default function Page() {
-  const { activeTab, nowPlaying, playerExpanded, vibeOpen, likedOpen } =
-    useApp();
+  const { activeTab, vibeOpen, likedOpen, playerExpanded } = useApp();
 
   return (
     <PhoneFrame>
-      {/* base layer: active tab + bottom chrome */}
-      <div className="absolute inset-0 flex flex-col">
-        <div className="relative flex-1 overflow-hidden">
-          {activeTab === "home" && <HomeScreen />}
-          {activeTab === "search" && <SearchScreen />}
-          {activeTab === "library" && <LibraryScreen />}
-        </div>
-        {nowPlaying && <MiniPlayer />}
+      {/* 1. Main Tabs (Base Layer) */}
+      <div className="absolute inset-0 bg-[#121212] pb-[130px]">
+        {activeTab === "home" && <HomeScreen />}
+        {activeTab === "search" && <SearchScreen />}
+        {activeTab === "library" && <LibraryScreen />}
+      </div>
+
+      {/* 2. Secondary Overlays */}
+      {likedOpen && <LikedSongsScreen />}
+      {vibeOpen && <VibeScreen />}
+
+      {/* 3. Global Bottom UI (Always visible on all screens) */}
+      <div className="absolute bottom-0 left-0 w-full z-50 bg-gradient-to-t from-[#121212] via-[#121212] to-transparent pointer-events-auto">
+        <MiniPlayer />
         <BottomNav />
       </div>
 
-      {/* overlays */}
-      {likedOpen && <LikedSongsScreen />}
-      {vibeOpen && <VibeScreen />}
+      {/* 4. Full Screen Player (Top Layer - covers everything when expanded) */}
       {playerExpanded && <NowPlayingScreen />}
-
-      {/* status bar floats above everything */}
-      <StatusBar />
     </PhoneFrame>
   );
 }

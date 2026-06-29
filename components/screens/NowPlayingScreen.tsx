@@ -42,7 +42,7 @@ export function NowPlayingScreen() {
 
   return (
     <div
-      className="animate-sheet-up absolute inset-0 z-50 flex flex-col"
+      className="animate-sheet-up absolute inset-0 z-[60] flex flex-col"
       style={{
         background: "linear-gradient(180deg, #45356b 0%, #241d33 45%, #121212 80%)",
       }}
@@ -157,12 +157,11 @@ export function NowPlayingScreen() {
           </div>
         </div>
 
-        {/* Adjust this vibe — second Vibe entry point (seeded) */}
+        {/* What's my vibe? — Primary Vibe entry point (inferred) */}
         <button
           onClick={() =>
             openVibe({
-              seed: { title: nowPlaying.title, artist: nowPlaying.artist },
-              autoRun: true,
+              mode: "infer",
             })
           }
           className="mt-6 flex w-full items-center gap-3 rounded-xl border border-green/30 bg-green/10 px-4 py-3 text-left active:bg-green/15"
@@ -172,10 +171,10 @@ export function NowPlayingScreen() {
           </div>
           <div className="min-w-0 flex-1">
             <div className="text-[14px] font-bold text-white">
-              Adjust this vibe
+              What&apos;s my vibe?
             </div>
             <div className="truncate text-[12px] text-subtle">
-              Not quite right? Steer from this track →
+              Identify the vibe of your recent tracks →
             </div>
           </div>
         </button>

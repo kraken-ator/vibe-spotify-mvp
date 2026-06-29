@@ -1,79 +1,69 @@
 "use client";
 
-import { RefreshCw, Plus } from "lucide-react";
+import { X, RefreshCcw, Plus } from "lucide-react";
 
 interface Props {
   open: boolean;
-  name: string; // the linked playlist's name
+  name: string;
   onClose: () => void;
   onUpdate: () => void;
   onSaveNew: () => void;
 }
 
-/** Asked when saving a vibe that's already a Library playlist with new edits. */
-export function SaveChoiceSheet({
-  open,
-  name,
-  onClose,
-  onUpdate,
-  onSaveNew,
-}: Props) {
+export function SaveChoiceSheet({ open, name, onClose, onUpdate, onSaveNew }: Props) {
   if (!open) return null;
 
   return (
-    <div className="absolute inset-0 z-[55] flex flex-col justify-end">
-      <div
-        className="animate-fade-in absolute inset-0 bg-black/60"
-        onClick={onClose}
+    <div className="absolute inset-0 z-[70] flex flex-col justify-end">
+      {/* Backdrop overlay */}
+      <div 
+        className="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity" 
+        onClick={onClose} 
       />
-      <div className="animate-sheet-up relative rounded-t-2xl bg-[#1e1e1e] p-5 pb-8">
-        <div className="mx-auto mb-4 h-1 w-9 rounded-full bg-white/25" />
-        <h3 className="text-[17px] font-bold text-white">Save changes</h3>
-        <p className="mb-4 mt-1 text-[13px] text-subtle">
-          You&apos;ve tweaked this vibe. Update the existing playlist or save a
-          new one?
-        </p>
-
-        <button
-          onClick={onUpdate}
-          className="mb-2 flex w-full items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-left active:bg-white/10"
-        >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-green">
-            <RefreshCw className="h-[18px] w-[18px] text-black" strokeWidth={2.5} />
+      
+      {/* Sheet Container with pb-[140px] */}
+      <div className="relative animate-sheet-up rounded-t-3xl bg-[#242424] px-5 pb-[140px] pt-6 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+        <div className="flex items-start justify-between pb-6">
+          <div>
+            <h2 className="text-[20px] font-bold text-white">Save Changes</h2>
+            <p className="mt-1 text-[14px] text-subtle">You&apos;re editing &quot;{name}&quot;</p>
           </div>
-          <div className="min-w-0 flex-1">
-            <div className="text-[14px] font-bold text-white">
-              Update “{name}”
+          <button 
+            onClick={onClose} 
+            className="-mr-2 rounded-full p-2 active:bg-white/10"
+            aria-label="Close"
+          >
+            <X className="h-6 w-6 text-subtle hover:text-white" />
+          </button>
+        </div>
+        
+        <div className="space-y-3">
+          <button
+            onClick={onUpdate}
+            className="flex w-full items-center gap-4 rounded-xl bg-[#333] p-4 active:bg-[#444] active:scale-[0.98] transition-transform"
+          >
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10">
+              <RefreshCcw className="h-5 w-5 text-green" />
             </div>
-            <div className="truncate text-[12px] text-subtle">
-              Overwrite the existing playlist
+            <div className="text-left">
+              <div className="text-[15px] font-bold text-white">Update existing playlist</div>
+              <div className="mt-0.5 text-[13px] text-subtle">Overwrite the current tracks</div>
             </div>
-          </div>
-        </button>
-
-        <button
-          onClick={onSaveNew}
-          className="flex w-full items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-left active:bg-white/10"
-        >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/30">
-            <Plus className="h-[18px] w-[18px] text-white" strokeWidth={2.5} />
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="text-[14px] font-bold text-white">
-              Save as new playlist
+          </button>
+          
+          <button
+            onClick={onSaveNew}
+            className="flex w-full items-center gap-4 rounded-xl bg-[#333] p-4 active:bg-[#444] active:scale-[0.98] transition-transform"
+          >
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10">
+              <Plus className="h-5 w-5 text-white" />
             </div>
-            <div className="truncate text-[12px] text-subtle">
-              Keep the original, create another
+            <div className="text-left">
+              <div className="text-[15px] font-bold text-white">Save as new playlist</div>
+              <div className="mt-0.5 text-[13px] text-subtle">Create a brand new playlist instead</div>
             </div>
-          </div>
-        </button>
-
-        <button
-          onClick={onClose}
-          className="mt-3 w-full py-2 text-[14px] font-semibold text-subtle"
-        >
-          Cancel
-        </button>
+          </button>
+        </div>
       </div>
     </div>
   );

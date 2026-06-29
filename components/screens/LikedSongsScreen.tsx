@@ -20,7 +20,7 @@ export function LikedSongsScreen() {
 
   return (
     <div
-      className="animate-sheet-up absolute inset-0 z-50 flex flex-col"
+      className="animate-sheet-up absolute inset-0 z-40 flex flex-col pb-[130px]"
       style={{
         background:
           "linear-gradient(180deg, #4750b5 0%, #2f3473 26%, #1b1c3a 42%, #161616 56%, #121212 70%)",
