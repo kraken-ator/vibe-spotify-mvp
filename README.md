@@ -50,6 +50,7 @@ Saved Vibes and Liked Songs appear in **Your Library**.
 
 ## 🏗️ How it works
 
+```text
 Browser (React shell)
    │  POST /api/vibe   { mode, prompt, currentSet?, steeringAction?, seedTrack?, sessionHistory? }
    ▼
@@ -57,6 +58,7 @@ app/api/vibe/route.ts  ──►  Groq (llama-3.3-70b-versatile)
    │  structured JSON: intent, tracks, title, whyThese, steeringSuggestions, note, isSearch
    ▼
 app/api/artwork/route.ts  ──►  iTunes Search API (server-side, cached) → 512×512 cover URL
+```
 
 - The API key is **server-side only** — it never reaches the browser bundle.
 - Groq is called with `response_format: { type: "json_object" }` and explicit
@@ -74,12 +76,14 @@ proprietary Circular, wired as a single swappable token).
 
 🔗 **Live Demo:** [vibe-spotify-mvp.vercel.app](https://vibe-spotify-mvp.vercel.app/)
 
-git clone https://github.com/kraken-ator/vibe-spotify-mvp.git
+```bash
+git clone [https://github.com/kraken-ator/vibe-spotify-mvp.git](https://github.com/kraken-ator/vibe-spotify-mvp.git)
 cd vibe-spotify-mvp
 npm install
 cp env.example .env.local          # PowerShell: Copy-Item env.example .env.local
-# open .env.local and set GROQ_API_KEY=...   (get one at https://console.groq.com)
+# open .env.local and set GROQ_API_KEY=...   (get one at [https://console.groq.com](https://console.groq.com))
 npm run dev                          # http://localhost:3000
+```
 
 ## 📝 Notes
 
